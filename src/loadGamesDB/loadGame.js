@@ -1,9 +1,6 @@
 
 const { Router } = require("express");
-const axios = require("axios");
 const { Videogame, Genre } = require("../db");
-const router = Router();
-const { API_KEY } = process.env;
 const json = require ("../harcode.json")
 
 
