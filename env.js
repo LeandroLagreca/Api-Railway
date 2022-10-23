@@ -1,4 +1,4 @@
-DB_USER = postgres
-DB_PASSWORD= 1234
-DB_HOST= localhost
-DB_PORT = 3000
+const DB_USER = postgres
+const DB_PASSWORD= 1234
+const DB_HOST= localhost
+const DB_PORT = 3000
