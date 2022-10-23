@@ -2,7 +2,6 @@
 
 # dependencies
 /.env
-/
 /.pnp
 .pnp.js
 
