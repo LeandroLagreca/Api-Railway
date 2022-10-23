@@ -26,7 +26,7 @@ const UserPost = async (req, res)=> {
         password: hashFunction(password)
     })
     const actionCodeSettings = {
-        url: 'http://localhost:3000/',
+        url:  "https://gamescript22.herokuapp.com/",
         handleCodeInApp: true,
         };
     sendSignInLinkToEmail(auth, email, actionCodeSettings)
