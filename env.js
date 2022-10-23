@@ -1,4 +1,0 @@
-DBUSER = postgres
-DBPASSWORD= 1234
-DBHOST= localhost
-DBPORT = 3001
