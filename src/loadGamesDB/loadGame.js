@@ -1,6 +1,9 @@
 
 const { Router } = require("express");
+const axios = require("axios");
 const { Videogame, Genre } = require("../db");
+const router = Router();
+const { API_KEY } = process.env;
 const json = require ("../harcode.json")
 
 
@@ -21,6 +24,7 @@ const Game = async () => {
                 description: e.description,
                 released: e.released,
                 price: e.price,
+                discount: e.discount,
                 images: e.images,
                 requirements: e.requirements,
             })

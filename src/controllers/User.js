@@ -26,7 +26,7 @@ const UserPost = async (req, res)=> {
         password: hashFunction(password)
     })
     const actionCodeSettings = {
-        url:  "https://gamescript22.herokuapp.com/",
+        url: 'http://localhost:3000/',
         handleCodeInApp: true,
         };
     sendSignInLinkToEmail(auth, email, actionCodeSettings)
@@ -39,6 +39,7 @@ const UserPost = async (req, res)=> {
     });
     res.status(201).send('Usuario creado correctamente')
 } catch (error){
+    console.log(error)
     res.status(400).json({error: "User not create!"});
 }
 }

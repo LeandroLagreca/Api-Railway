@@ -4,8 +4,18 @@ const { Videogame, Genre } = require("../db");
 const router = Router();
 const { API_KEY } = process.env;
 const json = require("../harcode.json");
-const { Op } =require ("sequelize");
+const { Op, Sequelize } = require("sequelize");
 //Post
+
+const getRowTableVideoGames = async (req, res) => {
+  try {
+    const count = await Videogame.count();
+
+    res.status(200).json(count.toString());
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
 
 const videogamePost = async (req, res) => {
   try {
@@ -68,42 +78,79 @@ const getGamesDb = async (req, res) => {
 };
 
 const getAllGames = async (req, res) => {
-  const {page = 0, size =10} = req.query;
-  let options={
-    limit: +size,
-    offset: (+page) * (+size)
-  }
-  const { count, rows} = await Videogame.findAndCountAll(options)
-  let { name } = req.query;
-  try {
-    let games = await getGamesDb()
-    if (name) {
-      let found = await Videogame.findAll({
-        where: { name: name },
-        include: {
-          model: Genre,
-          attributes: ["name"],
-          through: {
-            attributes: [],
-          },
-        },
+  const { filter = "" } = req.query;
+  const { name, rating, price, genre } = filter;
+  const { options = "" } = req.query;
+  let { page = 1 } = options;
+  const order = options?.sort && [["name", options.sort.toUpperCase()]];
+  if (page < 1) page = 1;
 
-      });
-      if (found) {
-        return res.status(200).json(found);
-      } else {
-        return res
-          .status(404)
-          .send({ msg: "sorry, this game is not available now" });
+  const where = {};
+  const genreFilter = {};
+
+  if (name)
+    where.name = {
+      [Op.iLike]: `${name}%`,
+    };
+
+  if (rating) {
+    where.rating_api = Sequelize.where(
+      Sequelize.fn("ROUND", Sequelize.col("rating_api")),
+      {
+        [Op.eq]: rating,
       }
-    } else {
+    );
+  }
+
+  if (price) {
+    where.price = Sequelize.where(
+      Sequelize.fn('TO_NUMBER', Sequelize.col("price"), '999,999.99'),
+      {
+        [Op.lte]: Number(price)
+      }
+    );
+  }
+
+  if (genre)
+    genreFilter.name = {
+      [Op.iLike]: genre,
+    };
+
+  let config = {
+    distinct: true,
+    include: {
+      model: Genre,
+      where: genreFilter,
+      through: {
+        attributes: [],
+      },
+      attributes: ["name"],
+    },
+    where,
+    order,
+    offset: (Number(page) - 1) * 10,
+    limit: 10
+  };
+  try {
+    const { count, rows } = await Videogame.findAndCountAll(config);
+    if (rows.length) {
+      // const position = (Number(page) - 1) * 10
+      // const results = rows.slice(position, position + 10)
       res.json({
-        status: 'success',
+        status: "success",
+        offset: (page - 1) * 10,
         total: count,
+        results: rows.length,
         games: rows,
-      })
+      });
+    } else {
+      let message;
+      if (filter?.name) message = "No se encontro el juego buscado";
+      else message = "No hay juegos disponibles";
+      res.status(404).send(message);
     }
   } catch (error) {
+	console.log(error)
     res.status(400).send(error);
   }
 };
@@ -139,22 +186,21 @@ const getGenres = async (req, res) => {
   }
 };
 
-const getDiscounts = async(req, res) => {
+const getDiscounts = async (req, res) => {
   try {
     const discounts = await Videogame.findAll({
       where: {
-        "discount.status" : true
-      }
-    })
-
-    if(!discounts.length) {
-      return res.send("Don't exist any discount")
+        "discount.status": true
+      },
+    });
+    if (!discounts.length) {
+      return res.send("Don't exist any discount");
     }
-    res.json(discounts)
+    res.json(discounts);
   } catch (error) {
-    res.status(404).send(error.message)
+    res.status(404).send(error.message);
   }
-}
+};
 
 const updateVideogame = async (req, res) => {
   let { id } = req.params;
@@ -203,5 +249,6 @@ module.exports = {
   getGenres,
   updateVideogame,
   getAllGames,
-  getDiscounts
+  getDiscounts,
+  getRowTableVideoGames,
 };

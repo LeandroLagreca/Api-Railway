@@ -4,12 +4,13 @@ const fs = require('fs');
 const path = require('path');
 const { generateKey } = require('crypto');
 const {
-  DATABASE_URL
+DATABASE_URL,
 } = process.env;
-
+// cambiar name de db
 const sequelize = new Sequelize(DATABASE_URL, {
   logging: false, // set to console.log to see the raw SQL queries
   native: false, // lets Sequelize know we can use pg-native for ~30% more speed
+  // CONFIGURCION ADICIONAL
   dialectOptions:{
     ssl:{
       require:true,
