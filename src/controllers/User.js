@@ -31,7 +31,7 @@ const UserPost = async (req, res) => {
 		});
 		await newUser.update({ cart: prevCart });
 		const actionCodeSettings = {
-			url: 'http://localhost:3000/',
+			url: "https://gamescript-pf.herokuapp.com/",
 			handleCodeInApp: true,
 		};
 		sendSignInLinkToEmail(auth, email, actionCodeSettings);
