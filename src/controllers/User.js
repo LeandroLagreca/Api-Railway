@@ -31,7 +31,7 @@ const UserPost = async (req, res) => {
 		});
 		await newUser.update({ cart: prevCart });
 		const actionCodeSettings = {
-			url: "https://gamescript-pf.herokuapp.com/",
+			url: "https://gamescript.vercel.app/home",
 			handleCodeInApp: true,
 		};
 		sendSignInLinkToEmail(auth, email, actionCodeSettings);
