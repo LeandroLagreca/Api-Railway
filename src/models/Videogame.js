@@ -34,8 +34,14 @@ module.exports = (sequelize) => {
       defaultValue: null,
     },
     price: {
-      type: DataTypes.STRING,
-      defaultValue: null,
+      type: DataTypes.FLOAT,
+      defaultValue: 0,
+      get() {
+        const value = this.getDataValue('price')
+        if(!value) return 0
+        if(this.discount?.status) return this.discount.currentPrice
+        return value
+      }
     },
     images: {
       type: DataTypes.TEXT,
@@ -54,6 +60,9 @@ module.exports = (sequelize) => {
         prevPrice: null,
         currentPrice: null
       }
-    }
+    },
+    trailer: {
+      type: DataTypes.STRING
+    },
   });
 };

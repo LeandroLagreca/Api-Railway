@@ -1,14 +1,13 @@
-const { DataTypes } = require("sequelize");
+const { DataTypes, NOW } = require("sequelize");
 module.exports = (sequelize) => {
   sequelize.define("PurchaseOrder", {
     id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
+      type: DataTypes.UUID,
+      defaultValue: DataTypes.UUIDV4,
       allowNull: false,
       primaryKey: true,
       unique: true,
     },
-
     companyname: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -29,6 +28,10 @@ module.exports = (sequelize) => {
       allowNull: false,
       defaultValue: "GameScript@gmail.com",
     },
+    games: {
+      type: DataTypes.JSON,
+      allowNull: false
+    },
     status: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -46,5 +49,9 @@ module.exports = (sequelize) => {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
+    date: {
+      type: DataTypes.DATEONLY,
+      defaultValue: DataTypes.NOW,
+    }
   });
 };

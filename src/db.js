@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const { generateKey } = require('crypto');
 const {
-DATABASE_URL,
+  DATABASE_URL
 } = process.env;
 // cambiar name de db
 const sequelize = new Sequelize(DATABASE_URL, {

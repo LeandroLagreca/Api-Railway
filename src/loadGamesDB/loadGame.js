@@ -19,11 +19,13 @@ const Game = async () => {
         if (!videogame) {
             videogame = await Videogame.create({
                 name: e.name,
+                trailer: e.trailer,
                 background_image: e.background_image,
+                trailer: e.trailer,
                 rating_api: e.rating_api,
                 description: e.description,
                 released: e.released,
-                price: e.price,
+                price: e.price === 'null' ? 0 : parseFloat(e.price),
                 discount: e.discount,
                 images: e.images,
                 requirements: e.requirements,

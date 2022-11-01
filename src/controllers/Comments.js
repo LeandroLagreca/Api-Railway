@@ -24,7 +24,7 @@ const postComment = async (req, res) => {
           await user.addComment(newComment);
           return res
             .status(200)
-            .send(` ${userName} your comment about ${gameName} was posted`);
+            .send(newComment);
         } else {
           return res.status(404).send("we couldn't match your user id/game id");
         }
@@ -40,6 +40,8 @@ const postComment = async (req, res) => {
     console.log(error);
   }
 };
+
+
 const getUserComments = async (req, res) => {
   let { userID } = req.query;
 
@@ -73,6 +75,8 @@ const getUserComments = async (req, res) => {
     console.log(error);
   }
 };
+
+
 const getGameComments = async (req, res) => {
   let { gameID } = req.query;
   try {
@@ -88,6 +92,7 @@ const getGameComments = async (req, res) => {
             "userComment",
             "rating_dislike",
             "createdAt",
+            "updatedAt",
             "id",
           ],
           through: { attributes: [] },
@@ -97,11 +102,43 @@ const getGameComments = async (req, res) => {
       if (allComments.comments.length>0) {
         res.status(200).send(allComments);
       } else {
-        res.status(404).json({ msg: "There are no comments yet" });
+        res.status(200).json([]);
       }
     }
   } catch (error) {
     console.log(error);
   }
 };
-module.exports = { postComment, getUserComments, getGameComments };
+
+
+const updateComment = async (req, res) => {
+  let {
+    text,
+    rating_like,
+    rating_dislike,
+    id,
+  } = req.body;
+
+  try {
+    let find = await Comment.findOne({ where: { id: id } });
+
+    if (find) {
+      await Comment.update(
+        {
+          text: text ? text : find.text,
+          rating_like: rating_like ? rating_like++ : find.rating_like,
+          rating_dislike: rating_dislike ? rating_dislike++ : find.rating_dislike,
+
+        },
+        { where: { id: id } }
+      );
+      return res.send({ msg: "Comment updated successfully" });
+    }
+    res.send({ msg: "Comment doesn't exist" });
+  } catch (error) {
+    res.status.send(error);
+  }
+};
+
+
+module.exports = { postComment, getUserComments, getGameComments, updateComment };
