@@ -15,12 +15,12 @@ module.exports = (sequelize) => {
       allowNull: false,
       unique: true,
     },
-    firstname: { type: DataTypes.STRING, defaultValue: null },
-    lastname: { type: DataTypes.STRING, defaultValue: null },
-    country: { type: DataTypes.STRING, defaultValue: null },
-    province: { type: DataTypes.STRING, defaultValue: null },
-    cardholder: { type: DataTypes.STRING, defaultValue: null },
-    cardnumber: { type: DataTypes.STRING, defaultValue: null },
+    firstname: { type: DataTypes.STRING, defaultValue: "" },
+    lastname: { type: DataTypes.STRING, defaultValue: "" },
+    country: { type: DataTypes.STRING, defaultValue: "" },
+    province: { type: DataTypes.STRING, defaultValue: "" },
+    cardholder: { type: DataTypes.STRING, defaultValue: "" },
+    cardnumber: { type: DataTypes.STRING, defaultValue: "" },
     cuit: {
       type: DataTypes.STRING,
     },
@@ -31,7 +31,8 @@ module.exports = (sequelize) => {
       type: DataTypes.STRING,
     },
     image: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
+      defaultValue: "",
     },
     password: {
       type: DataTypes.STRING,
@@ -65,5 +66,9 @@ module.exports = (sequelize) => {
       defaultValue: true,
       allowNull: false,
     },
+    notifications: {
+      type: DataTypes.ARRAY(DataTypes.JSON),
+      defaultValue: [],
+    }
   });
 };

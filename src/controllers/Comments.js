@@ -17,6 +17,8 @@ const postComment = async (req, res) => {
             userComment: userComment,
             rating_dislike: rating_dislike,
             rating_like: rating_like,
+            videogameId: gameID,
+            userId: userID
           });
           let gameName = await game.name;
           let userName = await user.name;
@@ -59,11 +61,11 @@ const getUserComments = async (req, res) => {
             "rating_dislike",
             "createdAt",
             "id",
+            'videogameId'
           ],
           through: { attributes: [] },
         },
       });
-      console.log(allComments);
 
       if (allComments) {
         res.status(200).send(allComments);
@@ -79,8 +81,8 @@ const getUserComments = async (req, res) => {
 
 const getGameComments = async (req, res) => {
   let { gameID } = req.query;
+  if(!gameID) return res.status(401).send('El ID del juego es requerido')
   try {
-    if (gameID) {
       let allComments = await Videogame.findOne({
         where: { id: gameID },
         attributes: ["name"],
@@ -104,39 +106,34 @@ const getGameComments = async (req, res) => {
       } else {
         res.status(200).json([]);
       }
-    }
   } catch (error) {
-    console.log(error);
+    res.status(400).send(error.message);
   }
 };
 
 
 const updateComment = async (req, res) => {
-  let {
-    text,
-    rating_like,
-    rating_dislike,
-    id,
-  } = req.body;
-
+  let props = {...req.body};
+  console.log(props)
   try {
-    let find = await Comment.findOne({ where: { id: id } });
-
+    let find = await Comment.findOne({ where: { id: props.id } });
+    console.log(find)
     if (find) {
-      await Comment.update(
-        {
-          text: text ? text : find.text,
-          rating_like: rating_like ? rating_like++ : find.rating_like,
-          rating_dislike: rating_dislike ? rating_dislike++ : find.rating_dislike,
+      await Comment.update({
+        text: props.text ? props.text : find.text,
+        rating_like: props.rating_like ? props.rating_like : find.rating_like,
 
-        },
-        { where: { id: id } }
-      );
+      }, {
+          where: {
+              id: props.id,
+          }
+      });
+      
       return res.send({ msg: "Comment updated successfully" });
     }
     res.send({ msg: "Comment doesn't exist" });
   } catch (error) {
-    res.status.send(error);
+    res.status(404).send(error);
   }
 };
 
