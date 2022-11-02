@@ -163,6 +163,26 @@ const addNotification = async (req, res) => {
 		res.status(400).json({ error: 'Error update User' });
 	}
 }
+/*
+     filtro para ordenar por stock el admin en front 
+    const OrdenXStock = 
+        action.payload === "min" ?
+        videogames.sort(function (a, b) {
+            if (a.stock > b.stock) return 1;
+            if (b.stock > a.stock) return -1;
+            return 0;
+        })
+        : videogames.sort(function (a, b) {
+            if (a.stock > b.stock) return -1;
+            if (b.stock > a.stock) return 1;
+            return 0;
+        
+        });
+            return {
+            ...state,
+            videogames: sortedByRating.map((e) => e),
+            };
+*/
 module.exports = {
 	allDataUser,
 	UserByID,

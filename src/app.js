@@ -4,7 +4,7 @@ const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const fileUpload = require('express-fileupload')
 const routes = require("./routes/index.js");
-const {CORS_URL} = process.env;
+const {CORS_URL} = process.env
 require("./db.js");
 const cors = require("cors");
 
