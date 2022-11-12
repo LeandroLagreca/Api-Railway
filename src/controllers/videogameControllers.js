@@ -37,7 +37,7 @@ const addGenreDB = async (genres) => {
         return { failed: "those genres already exist" };
       }
     } catch (error) {
-      console.log(error);
+      
     }
   } else {
     return { error: "a genre or arr of genres is required" };
@@ -80,7 +80,7 @@ const videogamePost = async (req, res) => {
         let response = await addGenreDB(newGenres);
 
         if (response.success) {
-          console.log("entré");
+          
           try {
             let allGenres = newGenres.concat(...genres);
 
@@ -95,7 +95,7 @@ const videogamePost = async (req, res) => {
               newgame: newVideogame,
             });
           } catch (error) {
-            console.log(error);
+            
           }
         } else {
           res.status(200).json({
@@ -218,7 +218,7 @@ const getAllGames = async (req, res) => {
       res.status(404).send(message);
     }
   } catch (error) {
-    console.log(error);
+    
     res.status(400).send(error);
   }
 };
@@ -269,7 +269,7 @@ const getGenres = async (req, res) => {
     const data = await Genre.findAll({ attributes: ["name"] });
     res.send(data);
   } catch (error) {
-    console.log(error);
+    
   }
 };
 
@@ -367,7 +367,7 @@ const UpdateStock = async (req, res) => {
         return res.status(200).send({ msg: `New stock ${newStock}` });
       }
     } catch (error) {
-      console.log(error);
+      
     }
   } else {
     res.status(404).send({

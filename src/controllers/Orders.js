@@ -46,7 +46,7 @@ const createOrder = async (req, res) => {
 				{ where: { id: userID } }
 			);
 		} catch (error) {
-			console.log(error);
+			
 		}
 	}
 
@@ -132,7 +132,7 @@ const createOrder = async (req, res) => {
 			return res.status(404).send({ msg: 'thats not a valid userid' });
 		}
 	} catch (error) {
-		console.log(error);
+		
 	}
 };
 
@@ -157,7 +157,7 @@ const getUserOrders = async (req, res) => {
 				res.send(found);
 			}
 		} catch (error) {
-			console.log(error);
+			
 		}
 	} else {
 		return res.status(404).send({ msg: 'an userID is required by params' });
@@ -192,7 +192,7 @@ const getAllOrders = async (req, res) => {
 		}
 		res.json(orders);
 	} catch (error) {
-		console.log(error);
+		
 		res.status(400).json({ error: error.message });
 	}
 };
