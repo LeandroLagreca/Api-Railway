@@ -32,7 +32,7 @@ const UserPost = async (req, res) => {
 		});
 		await newUser.update({ cart: prevCart });
 		const actionCodeSettings = {
-			url: "https://game-script.vercel.app/home",
+			url: "gamescript-frontend-production.up.railway.app/home",
 			handleCodeInApp: true,
 		};
 		sendSignInLinkToEmail(auth, email, actionCodeSettings);
