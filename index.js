@@ -9,7 +9,7 @@ conn.sync({ force: true }).then(() => {
   genresToDb().then(()=>{
     Game().then(()=>{
       server.listen(port, () => {
-         // console.log(`%s listening at ${port}`); // eslint-disable-line no-console
+         console.log(`%s listening at ${port}`); // eslint-disable-line no-console
       });
     });
   });
